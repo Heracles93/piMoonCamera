@@ -1,4 +1,7 @@
 __author__ = "Heracles93"
+"""
+source: https://projects.raspberrypi.org/en/projects/getting-started-with-picamera
+"""
 from picamera import PiCamera
 from time import sleep
 
@@ -50,8 +53,26 @@ class piMoonCamera:
         self.camera.stop_preview()        
 
     def getImages(self, nb: int, name: str, directory: str = None, previewTime: int = 2): #@TODO
+        """
+        @TODO
+        """
         for i in range(nb):
             self.getImage(name=name+str(i), directory=directory, previewTime=previewTime)
+    
+    def getVideo(self, duration: int, name: str):
+        """
+        @TODO
+        """
+        filepath = "tmp_video.h264"
+        self.camera.start_preview()
+        self.camera.start_recording(filepath)
+        sleep(duration)
+        self.camera.stop_recording()
+        self.camera.stop_preview()
+        
+    def setResolution(self, xResolution: int = 2592, yResolution: int = 1994):
+        self.camera.resolution = (xResolution, yResolution)
+        
     
 if __name__ == "__main__":
     print("Starting ...")
