@@ -72,18 +72,18 @@ class piMoonCamera:
         """
         self.setCameraRotation(0)
         
-    def getImage(self, name: str, directory: str = None, previewTime: int = 2, text: str = None, textSize: int = None, textBackgroundColor: str = None, textForegroundColor: str = None): #@TODO
+    def getImage(self, name: str, directory: str = None, previewTime: int = 2, text: str = None, textSize: int = None, textBackgroundColor: str = None, textForegroundColor: str = None):
         """
         Take a picture.
         
         Params:
-            name : (str) : ...
-            directory : (str) : ...
-            previewTime : (int) : ...
-            text : (str) : ...
-            textBackgroundColor : (str) : ...
-            textForegroundColor : (str) : ...
-            textSize : (int) : ...
+            name : (str) : name of the image
+            directory : (str) : directory path 
+            previewTime : (int) : time to preview the camera
+            text : (str) : if text to display on the image
+            textBackgroundColor : (str) : background color of the text
+            textForegroundColor : (str) : foreground color of the text
+            textSize : (int) : size of the text
         """
         filepath = name
         if directory:
@@ -103,16 +103,31 @@ class piMoonCamera:
         self.camera.capture(filepath)
         self.camera.stop_preview()        
 
-    def getImages(self, nb: int, name: str, directory: str = None, previewTime: int = 2): #@TODO
+    def getImages(self, nb: int, name: str, directory: str = None, previewTime: int = 2, text: str = None, textSize: int = None, textBackgroundColor: str = None, textForegroundColor: str = None):
         """
-        @TODO
+        Take a set pf <nb> pictures.
+        
+        Params:
+            nb : (int) : number of image(s) to take
+            name : (str) : name of the image set
+            directory : (str) : directory path 
+            previewTime : (int) : time to preview the camera
+            text : (str) : if text to display on the image
+            textBackgroundColor : (str) : background color of the text
+            textForegroundColor : (str) : foreground color of the text
+            textSize : (int) : size of the text
         """
         for i in range(nb):
-            self.getImage(name=name+str(i), directory=directory, previewTime=previewTime)
+            self.getImage(name=name+"_"+str(i), directory=directory, previewTime=previewTime, text=text, textSize=textSize, textBackgroundColor=textBackground, textForegroudColor=textForeground)
     
     def getVideo(self, duration: int, name: str, directory : str = None):
         """
-        @TODO
+        Take a video.
+        
+        Params:
+            duration : (int) : duration of the video
+            name : (str) : name of the video
+            directory : (str) : directory path 
         """
         filepath = name
         if directory:
@@ -125,26 +140,46 @@ class piMoonCamera:
         self.camera.stop_recording()
         self.camera.stop_preview()
         
+    def getVideos(self, nb : int, duration: int, name: str, directory : str = None):
+        """
+        Take a video.
+        
+        Params:
+            nb : (int) : number of video(s) to take
+            duration : (int) : duration of the video
+            name : (str) : name of the video
+            directory : (str) : directory path 
+        """
+        for i in range(nb):
+            self.getImage(duration=duration, name=name+"_"+str(i), directory=directory)
+
     def setResolution(self, xResolution: int = 2592, yResolution: int = 1994):
         """
-        @TODO
+        Change the Resolution and take a picture.
+
+        Params:
+            xResolution : (int) : resolution in pixel alonf X axis
+            yResolution : (int) : resolution in pixel alonf Y axis
         """
         self.camera.resolution = (xResolution, yResolution)
         self.framerate = 15
         self.camera.start_preview()
         sleep(5)
-        camera.capture("max_tmp_image.jpg")
-        camera.stop_preview()
+        self.camera.capture("max_tmp_image.jpg")
+        self.camera.stop_preview()
         
     def setText(self, text : str):
         """
-        @TODO
+        Add text to the camera
+
+        Params:
+            text : (str) : text to add
         """
         self.camera.annotate_text = text
         
     def autoBrightness(self):
         """
-        @TODO
+        Auto explore the brightness and preview.
         """
         self.camera.start_preview()
         for i in range(100):
@@ -155,7 +190,7 @@ class piMoonCamera:
 
     def autoContrast(self):
         """
-        @TODO
+        Auto explore the contrast and preview.
         """
         self.camera.start_preview()
         for i in range(100):
